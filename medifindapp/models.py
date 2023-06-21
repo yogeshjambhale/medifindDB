@@ -1,23 +1,12 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation, GenericForeignKey
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
 
-class Account(models.Model):
-    name = models.CharField("Name of Account", "Name", max_length=64)
-    email = models.EmailField(blank = True, null = True)
-    phone = models.CharField(max_length=20, blank = True, null = True)
-    industry = models.CharField("Industry Type", max_length=255,  blank=True, null=True)
-    website = models.URLField("Website", blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-    createdBy = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='account_created_by', on_delete=models.CASCADE)
-    createdAt = models.DateTimeField("Created At", auto_now_add=True)
-    isActive = models.BooleanField(default=False)
 
-    def _str_(self):
-        return self.name
 
 
 class Products(models.Model):
@@ -34,6 +23,7 @@ class Products(models.Model):
 
     def _str_(self):
         return self.product_name
+        
 
 class CartData(models.Model):
     product_name= models.CharField(max_length=100, blank = True, null = True)
@@ -47,8 +37,8 @@ class CartData(models.Model):
     soldQty= models.CharField(max_length=20, blank = True, null = True)
     avlQty= models.CharField(max_length=20, blank = True, null = True)
     quantity= models.CharField(max_length=20, blank = True, null = True)
-    userId= models.IntegerField(max_length=20, blank = True, null = True)
-    productId= models.CharField(max_length=20, blank = True, null = True)
+    userId= models.IntegerField( blank = True, null = True)
+    productId= models.IntegerField( blank = True, null = True)
 
     def _str_(self):
         return self.product_name
@@ -78,7 +68,7 @@ class Address(models.Model):
     city= models.CharField(max_length=100, blank = True, null = True)
     pincode=models.CharField(max_length=100, blank = True, null = True)
     mobile= models.CharField(max_length=100, blank = True, null = True)
-    userId=models.IntegerField(max_length=100, blank = True, null = True)
+    userId=models.IntegerField( blank = True, null = True)
 
     def _str_(self):
         return self.name
@@ -93,11 +83,34 @@ class Orders(models.Model):
     image = models.CharField(max_length=200, blank = True, null = True)
     qty= models.CharField(max_length=20, blank = True, null = True)
     quantity= models.CharField(max_length=20, blank = True, null = True)
-    userId= models.CharField(max_length=20, blank = True, null = True)
-    productId= models.IntegerField(max_length=20, blank = True, null = True)
+    userId= models.IntegerField( blank = True, null = True)
+    productId= models.IntegerField( blank = True, null = True)
 
     def _str_(self):
         return self.product_name
+
+class hotel(models.Model):
+    hotel_name= models.CharField(max_length=250, blank = True, null = True)
+    staytypes= models.CharField(max_length=250, blank = True, null = True)
+    aminities= models.CharField(max_length=250, blank = True, null = True)
+    description=models.CharField(max_length=250, blank = True, null = True)
+    address= models.CharField(max_length=200, blank = True, null = True)
+    images= models.CharField(max_length=300, blank = True, null = True)
+
+    def _str_(self):
+        return self.hotel_name
+
+class rooms(models.Model):
+    hotel= models.ForeignKey('medifindapp.hotel', on_delete=models.CASCADE, related_name='room')
+    bedtypes= models.CharField(max_length=250, blank = True, null = True)
+    roomtypes= models.CharField(max_length=250, blank = True, null = True)
+    aminities= models.CharField(max_length=250, blank = True, null = True)
+    totalbeds=models.CharField(max_length=250, blank = True, null = True)
+    price= models.CharField(max_length=20, blank = True, null = True)
+    images= models.CharField(max_length=300, blank = True, null = True)
+
+    def _str_(self):
+        return self.roomtypes
 # custom user manager
 
 class UserManager(BaseUserManager):
@@ -167,3 +180,6 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+
+

@@ -1,24 +1,10 @@
-"""medifindDB URL Configuration
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path
+from django.urls import path , include
 from medifindapp import views
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path(r'accounts/', views.AccountAPIView.as_view(), name='account-list'),
+    path('admin/', admin.site.urls), 
+    path('api/user/', include('medifindapp.urls')) ,   
     path('products/',views.ProductsAPIView.as_view(), name='product-list'),
     path('product/<int:pk>/',views.productAPIView.as_view(), name='product-list'),
     path(r'cartdata/',views.CartDataAPIView.as_view(), name='product-list'),
@@ -29,5 +15,10 @@ urlpatterns = [
     path(r'address/',views.AddressAPIView.as_view(), name='product-list'),
     path(r'orders/',views.OrdersAPIView.as_view(), name='product-list'),
     path(r'order/<int:userId>/',views.OrdersIdAPIView.as_view(), name='product-list'),
+
+    path(r'hotels/',views.HotelAPIView.as_view(), name='product-list'),
+    path(r'hotel/<int:id>/',views.HotelIdAPIView.as_view(), name='product-list'),
+    path(r'rooms/',views.RoomsAPIView.as_view(), name='product-list'),
+    path(r'room/<int:id>/',views.RoomsIdAPIView.as_view(), name='product-list'),
     
 ]

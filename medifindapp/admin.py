@@ -1,13 +1,23 @@
 from django.contrib import admin
 from medifindapp.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from medifindapp.models import Account
 from medifindapp.models import Products
+from medifindapp.models import CartData,hotel,rooms
+
 
 
 # Register your models here.
-admin.site.register(Account)
+
 admin.site.register(Products)
+admin.site.register(CartData)
+
+@admin.register(hotel)
+class hotelAdmin(admin.ModelAdmin):
+    list_display = ('id','hotel_name','address')
+
+@admin.register(rooms)
+class roomsAdmin(admin.ModelAdmin):
+    list_display = ('id','roomtypes','aminities','price')
 # Register your models here.
 class UserModelAdmin(BaseUserAdmin):
 
